@@ -48,6 +48,7 @@ CREATE TABLE `pedido`(
     `total` DECIMAL(10, 2) NOT NULL,
     `cliente_id` INT NOT NULL,
     `metodo_pago_id` INT NOT NULL,
+    `estado` ENUM('Pendiente', 'Procesando', 'Enviado', 'Entregado', 'Cancelado') DEFAULT 'Pendiente',
     CONSTRAINT `pedido_metodo_pago_id_foreign` FOREIGN KEY(`metodo_pago_id`) REFERENCES `metodo_pago`(`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE
@@ -156,6 +157,16 @@ CREATE TABLE IF NOT EXISTS alerta_stock (
     ON DELETE RESTRICT
     ON UPDATE CASCADE
 );
+DROP TABLE IF EXISTS auditoria_precio;
+CREATE TABLE IF NOT EXISTS auditoria_precio (
+  id                INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  producto_id       INT NOT NULL,
+  presentacion_id   INT NOT NULL,
+  old_precio        DECIMAL(10, 2) NOT NULL,
+  new_precio        DECIMAL(10, 2) NOT NULL,
+  creado_en    DATETIME NOT NULL DEFAULT NOW(),
+  usuario_creador   VARCHAR(50) NOT NULL
+);
 
 USE pizzeria_db;
 
@@ -226,6 +237,9 @@ INSERT INTO pedido (fecha_recogida, total, cliente_id, metodo_pago_id) VALUES
 ('2025-06-14 18:00:00', 100000, 3, 1),
 ('2025-06-10 19:00:00', 15900, 2, 2); 
 
+INSERT INTO pedido (fecha_recogida, total, cliente_id, metodo_pago_id) VALUES 
+('2025-06-19 11:00:00', 5000, 3, 1);
+
 -- Insertar detalles de pedido
 INSERT INTO detalle_pedido (cantidad, pedido_id) VALUES 
 (2, 1), 
@@ -242,8 +256,7 @@ INSERT INTO detalle_pedido_combo (detalle_id, combo_id) VALUES
 
 -- Insertar ingredientes extra
 INSERT INTO ingrediente_extra (cantidad, detalle_pedido_id, ingrediente_id) VALUES 
-(1, 1, 3), 
-(2, 1, 4); 
+(10, 1, 1); 
 
 -- Insertar facturas
 INSERT INTO factura (cliente, total, fecha, pedido_id, cliente_id) VALUES 
@@ -257,9 +270,9 @@ INSERT INTO pedido (fecha_recogida, total, cliente_id, metodo_pago_id) VALUES
 ('2025-06-18 19:00:00', 15900, 2, 2); 
 
 INSERT INTO ingrediente (nombre, stock, precio) VALUES 
-('Queso mozzarella', 1, 2.50),
-('Salsa de tomate', 2, 1.00),
-('Pepperoni', 4, 3.00),
+('Piña', 1, 2.50),
+('Pimentón', 2, 1.00),
+('Huevo de codorniz', 4, 3.00),
 ('Champiñones', 5, 2.00);
 
 INSERT INTO resumen_ventas (fecha, total_pedidos, total_ingresos, creado_en) VALUES
