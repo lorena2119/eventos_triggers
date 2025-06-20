@@ -162,7 +162,7 @@ USE pizzeria_db;
 -- Insertar tipos de producto
 INSERT INTO tipo_producto (nombre) VALUES 
 ('Pizza'),
-('Bebida')
+('Bebida');
 
 -- Insertar clientes
 INSERT INTO cliente (nombre, telefono, direccion) VALUES 
@@ -255,3 +255,18 @@ INSERT INTO pedido (fecha_recogida, total, cliente_id, metodo_pago_id) VALUES
 ('2025-06-18 19:00:00', 25000, 2, 2),
 ('2025-06-18 18:00:00', 100000, 3, 1),
 ('2025-06-18 19:00:00', 15900, 2, 2); 
+
+INSERT INTO ingrediente (nombre, stock, precio) VALUES 
+('Queso mozzarella', 1, 2.50),
+('Salsa de tomate', 2, 1.00),
+('Pepperoni', 4, 3.00),
+('Champiñones', 5, 2.00);
+
+INSERT INTO resumen_ventas (fecha, total_pedidos, total_ingresos, creado_en) VALUES
+('2023-01-15', 25, 750.50, '2023-01-15 23:59:59'),
+('2023-03-22', 30, 900.00, '2023-03-22 23:59:59'),
+('2023-06-10', 40, 1200.75, '2023-06-10 23:59:59'),
+('2023-09-05', 20, 600.25, '2023-09-05 23:59:59'),
+('2023-12-25', 50, 1800.00, '2023-12-25 23:59:59'),
+('2024-02-14', 35, 1050.30, '2024-02-14 23:59:59'),
+('2024-04-30', 28, 840.60, '2024-04-30 23:59:59');
